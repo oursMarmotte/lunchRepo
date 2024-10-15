@@ -4,59 +4,65 @@ namespace App\Controller;
 
 use App\Entity\Restaurant;
 use App\Repository\RestaurantRepository;
+use DateTimeImmutable;
 use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('api/restaurant',name:'app_api_restaurant')]
 class RestaurantController extends AbstractController
 {
 
-    public function __construct(private EntityManagerInterface $manager,private RestaurantRepository $repository )
+    public function __construct(private EntityManagerInterface $manager,
+    private RestaurantRepository $repository,
+    private SerializerInterface $serializer,
+    private UrlGeneratorInterface $urlGenerator,
+     )
     {
         
     }
 
 
     #[Route(name:'new',methods:'POST')]
-   public function new():Response{
+   public function new(Request $request):JsonResponse{
+$restaurant = $this->serializer->deserialize($request->getContent(),Restaurant::class,'json');
+$restaurant->setCreatedAt(new DateTimeImmutable());
+$restaurant->setMaxGuest(30);
 
-$restaurant = new Restaurant();
-
-$restaurant->setName(name:'Restaurant vietnamien');
-$restaurant->setDescription(description:'cette qualité et ce gout par le chef diem nhoc');
-$restaurant->setMaxGuest(40);
-$restaurant->setCreatedAt(new \DateTimeImmutable());
-// a stocker enbase
 
 // Tell Doctrine you want to (eventually) save the restaurant (no queries yet)
 $this->manager->persist($restaurant);
 // Actually executes the queries (i.e. the INSERT query)
 $this->manager->flush();
-return $this->json(['message '=>"Restaurant ressource  created with {$restaurant->getId()} id"],status: RESPONSE::HTTP_CREATED);
+
+
+return new JsonResponse(data:null,status:Response::HTTP_CREATED,json: true);
    }
 
 
    
    #[Route('/{id}',name:'show',methods:'GET')]
-   public function show(int $id):Response{
+   public function show(int $id):JsonResponse{
     
 
     $restaurant = $this->repository->findOneBy(['id'=>$id]);
-    if(! $restaurant){
-        throw $this->createNotFoundException(("No restaurant found for {$id} id"));
-    }
+    if($restaurant){
+        $responseData = $this->serializer->serialize($restaurant,'json');
+        return new JsonResponse($responseData,Response::HTTP_OK,[],true);
 
-    return $this->json(['message'=>"Restaurant was found{$restaurant->getName()} for {$restaurant->getId()}id"]);
    }
+return new JsonResponse(null,Response::HTTP_NOT_FOUND);
 
-
-
+   }
 
    #[Route('/{id}',name:'edit',methods:'PUT')]
    public function edit(int $id):Response{
