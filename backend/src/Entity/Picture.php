@@ -29,6 +29,15 @@ class Picture
     #[ORM\JoinColumn(nullable: false)]
     private ?Restaurant $restaurant = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    private ?EntreDuChef $entreChef = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pictures')]
+    private ?DessertDuChef $dessertChef = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $imgname = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +99,42 @@ class Picture
     public function setRestaurant(?Restaurant $restaurant): static
     {
         $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    public function getEntreChef(): ?EntreDuChef
+    {
+        return $this->entreChef;
+    }
+
+    public function setEntreChef(?EntreDuChef $entreChef): static
+    {
+        $this->entreChef = $entreChef;
+
+        return $this;
+    }
+
+    public function getDessertChef(): ?DessertDuChef
+    {
+        return $this->dessertChef;
+    }
+
+    public function setDessertChef(?DessertDuChef $dessertChef): static
+    {
+        $this->dessertChef = $dessertChef;
+
+        return $this;
+    }
+
+    public function getImgname(): ?string
+    {
+        return $this->imgname;
+    }
+
+    public function setImgname(string $imgname): static
+    {
+        $this->imgname = $imgname;
 
         return $this;
     }

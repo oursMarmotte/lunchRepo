@@ -16,6 +16,20 @@ class BookingRepository extends ServiceEntityRepository
         parent::__construct($registry, Booking::class);
     }
 
+
+    public function findAllById($id):array
+    {
+
+return $this->createQueryBuilder('b')
+->where('b.client =:val')
+->setParameter('val',$id)
+->orderBy('b.id','ASC')
+->getQuery()
+->getResult();
+
+
+    }
+
     //    /**
     //     * @return Booking[] Returns an array of Booking objects
     //     */

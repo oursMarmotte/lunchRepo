@@ -5,11 +5,14 @@ namespace App\Entity;
 use App\Repository\BookingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Attribute\MaxDepth as AttributeMaxDepth;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
 class Booking
 {
     #[ORM\Id]
+    
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
@@ -17,11 +20,11 @@ class Booking
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $guestNumber = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $orderDate = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $orderDate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $orderHour = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $orderHour = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $allergy = null;
@@ -32,10 +35,16 @@ class Booking
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'booking')]
+   
+
+   
+
+    #[ORM\ManyToOne()]
+    
     private ?Restaurant $restaurant = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
+    
     private ?User $client = null;
 
     public function getId(): ?int
@@ -55,24 +64,24 @@ class Booking
         return $this;
     }
 
-    public function getOrderDate(): ?\DateTimeInterface
+    public function getOrderDate(): ?string
     {
         return $this->orderDate;
     }
 
-    public function setOrderDate(\DateTimeInterface $orderDate): static
+    public function setOrderDate(string $orderDate): static
     {
         $this->orderDate = $orderDate;
 
         return $this;
     }
 
-    public function getOrderHour(): ?\DateTimeInterface
+    public function getOrderHour(): ?string
     {
         return $this->orderHour;
     }
 
-    public function setOrderHour(\DateTimeInterface $orderHour): static
+    public function setOrderHour(string $orderHour): static
     {
         $this->orderHour = $orderHour;
 
@@ -114,6 +123,14 @@ class Booking
 
         return $this;
     }
+
+   
+
+   
+
+   
+
+    
 
     public function getRestaurant(): ?Restaurant
     {

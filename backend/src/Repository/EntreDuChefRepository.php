@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\MenuCategory;
+use App\Entity\EntreDuChef;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MenuCategory>
+ * @extends ServiceEntityRepository<EntreDuChef>
  */
-class MenuCategoryRepository extends ServiceEntityRepository
+class EntreDuChefRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MenuCategory::class);
+        parent::__construct($registry, EntreDuChef::class);
     }
 
     //    /**
-    //     * @return MenuCategory[] Returns an array of MenuCategory objects
+    //     * @return EntreDuChef[] Returns an array of EntreDuChef objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
+    //            ->orderBy('e.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?MenuCategory
+    //    public function findOneBySomeField($value): ?EntreDuChef
     //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
+    //        return $this->createQueryBuilder('e')
+    //            ->andWhere('e.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

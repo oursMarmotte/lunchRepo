@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MenuRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: MenuRepository::class)]
 class Menu
@@ -30,6 +31,7 @@ class Menu
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'menus')]
+    
     private ?Restaurant $restaurant = null;
 
     public function getId(): ?int
